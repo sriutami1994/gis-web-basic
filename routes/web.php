@@ -30,8 +30,8 @@ Route::get('/map', [MapController::class, 'index']);
 Route::get('/interactive', [MapDataController::class, 'index'])->name('map.index');
 Route::get('/api/markers', [MapDataController::class, 'getMarkers']);
 Route::get('/api/polygons', [MapDataController::class, 'getPolygons']);
-Route::post('/api/markers', [MapDataController::class, 'storeMarker']);
-Route::post('/api/polygons', [MapDataController::class, 'storePolygon']);
+Route::post('/api/markers', [MapDataController::class, 'storeMarker'])->name('storeMarker');
+Route::post('/api/polygons', [MapDataController::class, 'storePolygon'])->name('storePolygon');
 
 /* HANDS-ON 2: MENAMBAHKAN INTERAKSI MARKER, POLIGON, DAN PENYIMPANAN DATA SPASIAL KE DATABASE PART 2*/
 # customisasi -> menggunakan template adminlte untuk membuat tampian yang lebih dinamis 

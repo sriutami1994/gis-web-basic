@@ -21,7 +21,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Add Marker -->
-                    <form id="add-marker-form" action="{{ route('map.storeMarker') }}" method="POST">
+                    <form id="add-marker-form" action="{{ route('storeMarker') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>Marker Name:</label>
@@ -39,7 +39,7 @@
                     </form>
                     <hr>
                     <!-- Add Polygon -->
-                    <form id="add-polygon-form" action="{{ route('map.storePolygon') }}" method="POST">
+                    <form id="add-polygon-form" action="{{ route('storePolygon') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>Polygon Coordinates (JSON):</label>
