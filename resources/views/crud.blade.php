@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Add Marker -->
-                    <form id="add-marker-form" action="{{ route('handson3.storeMarker') }}" method="POST">
+                    <form id="add-marker-form" action="#" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>Marker Name:</label>
@@ -60,7 +60,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Add Polygon -->
-                    <form id="add-polygon-form" action="{{ route('handson3.storePolygon') }}" method="POST">
+                    <form id="add-polygon-form" action="#" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>Polygon Coordinates (JSON):</label>
@@ -165,113 +165,5 @@
 
     $(document).ready(function(){
     })
-
-    function delete_satuan(id){
-        swal({
-            title: "Apakah anda yakin menghapus data ini?",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Ya",
-            cancelButtonText: "Tidak",
-            closeOnConfirm: false
-        },
-        function(){
-            $.ajax({
-                type: "DELETE",
-                url: '{{url("satuan")}}/'+id,
-                async:true,
-                data: {
-                    _token:token,
-                    id:id
-                },
-                beforeSend: function(data){
-                    // replace dengan fungsi loading
-                },
-                success:  function(data){
-                    if(data==1){
-                        swal("Deleted!", "Data satuan berhasil dihapus.", "success");
-                    }else{
-                        
-                        swal("Failed!", "Gagal menghapus data satuan.", "error");
-                    }
-                },
-                complete: function(data){
-                    tb_satuan.fnDraw(false);
-                },
-                error: function(data) {
-                    swal("Error!", "Ajax occured.", "error");
-                }
-            });
-        });
-    }
-
-    function submit_valid(id){
-        if($(".validated_form").valid()) {
-            data = {};
-            $("#form-edit").find("input[name], select").each(function (index, node) {
-                data[node.name] = node.value;
-                
-            });
-
-            $.ajax({
-                type:"PUT",
-                url : '{{url("satuan/")}}/'+id,
-                dataType : "json",
-                data : data,
-                beforeSend: function(data){
-                    // replace dengan fungsi loading
-                },
-                success:  function(data){
-                    if(data.status ==1){
-                        show_info("Data satuan berhasil disimpan!");
-                        $('#modal-large').modal('toggle');
-                    }else{
-                        show_error("Gagal menyimpan data ini!");
-                        return false;
-                    }
-                },
-                complete: function(data){
-                    // replace dengan fungsi mematikan loading
-                    tb_satuan.fnDraw(false);
-                },
-                error: function(data) {
-                    show_error("error ajax occured!");
-                }
-
-            })
-        } else {
-            return false;
-        }
-    }
-
-    function edit_data(id){
-        $.ajax({
-            type: "GET",
-            url: '{{url("satuan")}}/'+id+'/edit',
-            async:true,
-            data: {
-                _token      : "{{csrf_token()}}",
-            },
-            beforeSend: function(data){
-                // on_load();
-                $('#modal-xl').find('.modal-xl').find(".modal-content").find(".modal-header").attr("class","modal-header bg-light-blue");
-                $("#modal-xl .modal-title").html("Edit Data - Satuan");
-                $('#modal-xl').modal("show");
-                $('#modal-xl').find('.modal-body-content').html('');
-                $("#modal-xl").find(".overlay").fadeIn("200");
-            },
-                success:  function(data){
-                $('#modal-xl').find('.modal-body-content').html(data);
-            },
-                complete: function(data){
-                $("#modal-xl").find(".overlay").fadeOut("200");
-            },
-                error: function(data) {
-                alert("error ajax occured!");
-            }
-
-        });
-    }
 </script>
 @endsection

@@ -1,5 +1,9 @@
 @extends('layout.app')
 
+@section('title')
+<h3>Hands-On2</h3>
+@endsection
+
 @section('content')
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <div class="container-fluid">
