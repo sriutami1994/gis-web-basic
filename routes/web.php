@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController; 
 use App\Http\Controllers\MapDataController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PetaCRUDController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -35,6 +36,14 @@ Route::post('/api/polygons', [MapDataController::class, 'storePolygon']);
 /* HANDS-ON 2: MENAMBAHKAN INTERAKSI MARKER, POLIGON, DAN PENYIMPANAN DATA SPASIAL KE DATABASE PART 2*/
 # customisasi -> menggunakan template adminlte untuk membuat tampian yang lebih dinamis 
 Route::get('/interactiveUp', [MapDataController::class, 'index2'])->name('map.index2');
+
+
+/*HANDS-ON 3 : */
+Route::get('/handson3', [PetaCRUDController::class, 'index'])->name('handson3.index');
+Route::get('/listDataMarker', [PetaCRUDController::class, 'getListMarker'])->name('handson3.getListMarker');
+Route::get('/listDataPolygon', [PetaCRUDController::class, 'getListPolygon'])->name('handson3.getListPolygon');
+Route::post('/storeMarker', [PetaCRUDController::class, 'index'])->name('handson3.storeMarker');
+Route::post('/storePolygon', [PetaCRUDController::class, 'index'])->name('handson3.storePolygon');
 
 
 

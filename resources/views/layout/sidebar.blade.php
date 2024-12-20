@@ -68,7 +68,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="pages/layout/boxed.html" class="nav-link" target="_blank">
+                                <a href="{{ url('/handson3') }}" class="nav-link" target="_blank">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p>Hands-On 3</p>
                                 </a>
