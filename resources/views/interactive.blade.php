@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Dasar Peta Interaktif</title>
     
     <!-- Leaflet.js CDN -->
@@ -12,7 +12,6 @@
 
     <!-- Google Maps API -->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4lKVb0eLSNyhEO-C_8JoHhAvba6aZc3U"></script>
-
     <style>
         .form-container {
             margin: 20px;
@@ -29,6 +28,8 @@
 </head>
 <body>
 
+    <h1>Peta Interaktif dengan Laravel</h1>
+
     <div class="form-container">
         <h3>Tambahkan Marker</h3>
         <form id="markerForm" method="POST" action="{{ url('api/markers') }}">
@@ -40,11 +41,12 @@
         </form>
 
         <h3>Tambahkan Poligon</h3>
-        <form id="polygonForm">
+        <form id="polygonForm" method="POST" action="{{ url('api/polygons') }}">
             <textarea id="polygonCoords" placeholder="Koordinat Poligon (JSON)" required></textarea>
             <button type="submit">Tambah Poligon</button>
         </form>
     </div>
+
 
     <script type="text/javascript">
         // Tambahkan event listener untuk marker
@@ -56,16 +58,20 @@
 
             fetch("{{url("api/markers")}}", {
                 method: "POST",
-                 headers: {
+                headers: {
                     "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                 },
                 body: JSON.stringify({ name, latitude: lat, longitude: lng }),
             })
-                .then((res) => res.json())
-                .then((data) => {
-                    alert("Marker ditambahkan!");
-                });
+            .then((res) => res.json())
+            .then((data) => {
+                alert("Marker ditambahkan!");
+            })
+            .catch((error) => {
+                console.error("Error:", error);
+            });
+
         });
 
         // Tambahkan event listener untuk poligon
@@ -91,4 +97,3 @@
 
 </body>
 </html>
-

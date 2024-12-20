@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MapController; 
 use App\Http\Controllers\MapDataController;
+use App\Http\Controllers\DashboardController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,23 +15,26 @@ use App\Http\Controllers\MapDataController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/* UNTUK MENAMBAHKAN DASHBOARD */
+Route::get('/', [DashboardController::class, 'index']);
 
+
+/* HANDS-ON 1: DASAR PETA INTERAKTIF (BASIC MAP INTERACTION) */
+# fungsi telah dijelaskan pada hands-on 1
 Route::get('/map', [MapController::class, 'index']);
 
-Route::get('/getMap', [MapController::class, 'getMap']);
 
-
+/* HANDS-ON 2: MENAMBAHKAN INTERAKSI MARKER, POLIGON, DAN PENYIMPANAN DATA SPASIAL KE DATABASE PART 1*/
+# fungsi telah dijelaskan pada hands-on 2
+Route::get('/interactive', [MapDataController::class, 'index'])->name('map.index');
 Route::get('/api/markers', [MapDataController::class, 'getMarkers']);
 Route::get('/api/polygons', [MapDataController::class, 'getPolygons']);
 Route::post('/api/markers', [MapDataController::class, 'storeMarker']);
 Route::post('/api/polygons', [MapDataController::class, 'storePolygon']);
 
+/* HANDS-ON 2: MENAMBAHKAN INTERAKSI MARKER, POLIGON, DAN PENYIMPANAN DATA SPASIAL KE DATABASE PART 2*/
+# customisasi -> menggunakan template adminlte untuk membuat tampian yang lebih dinamis 
+Route::get('/interactiveUp', [MapDataController::class, 'index2'])->name('map.index2');
 
-Route::get('/interactive', [MapDataController::class, 'index'])->name('map.index');
-Route::post('/markers', [MapDataController::class, 'storeMarker'])->name('map.storeMarker');
-Route::post('/polygons', [MapDataController::class, 'storePolygon'])->name('map.storePolygon');
-Route::get('/data', [MapDataController::class, 'getData'])->name('map.getData');
+
 

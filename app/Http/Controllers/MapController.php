@@ -10,9 +10,4 @@ class MapController extends Controller
     {
         return view('map');
     }
-
-    public function getMap()
-    {
-        echo "test";
-    }
 }
