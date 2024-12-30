@@ -18,7 +18,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Add Marker -->
-                    <form id="add-marker-form" action="#" method="POST">
+                    <form id="add-marker-form" action="{{ url('handson3.storeMarker')}}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label>Marker Name:</label>

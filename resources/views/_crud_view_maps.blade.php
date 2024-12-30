@@ -16,9 +16,11 @@ Maps View
     <!-- Leaflet.js CDN -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css" />
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
 
     <!-- Google Maps API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4lKVb0eLSNyhEO-C_8JoHhAvba6aZc3U"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4lKVb0eLSNyhEO-C_8JoHhAvba6aZc3U&libraries=places"></script>
 
 	<style type="text/css">
 		.select2 {
@@ -53,25 +55,63 @@ Maps View
         // Leaflet Map
         const leafletMap = L.map('leaflet-map').setView([marker.latitude, marker.longitude], 13);
 
+         // Tambahkan tile layer
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
             attribution: '&copy; OpenStreetMap contributors'
         }).addTo(leafletMap);
 
-        const leafletMarker = L.marker([marker.latitude, marker.longitude]).addTo(leafletMap);
-        leafletMarker.bindPopup(`<b>${marker.name}</b>`).openPopup();
+        // Koordinat awal dan akhir
+        const startPoint = L.latLng(marker.latitude, marker.longitude); // Universitas Udayana
+       const endPoint = L.latLng(-8.684644, 115.216843); // Universitas Udayana Sudirman
+
+        // Tambahkan routing
+        L.Routing.control({
+            waypoints: [startPoint, endPoint],
+            routeWhileDragging: true,
+            showAlternatives: true,
+            altLineOptions: { styles: [{ color: 'blue', opacity: 0.7, weight: 5 }] },
+        }).addTo(leafletMap);
+
 
         // Google Maps API Map
-        const googleMapDiv = document.getElementById('google-map');
-        const googleMap = new google.maps.Map(googleMapDiv, {
-            center: { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) },
-            zoom: 13,
-        });
+		const googleMapDiv = document.getElementById('google-map');
+		const googleMap = new google.maps.Map(googleMapDiv, {
+		    center: { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) },
+		    zoom: 13,
+		});
 
-        new google.maps.Marker({
-            position: { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) },
-            map: googleMap,
-            title: marker.name,
-        });
+		// Tambahkan marker pada lokasi awal
+		new google.maps.Marker({
+		    position: { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) },
+		    map: googleMap,
+		    title: marker.name,
+		});
+
+		// Layanan Directions
+		const directionsService = new google.maps.DirectionsService();
+		const directionsRenderer = new google.maps.DirectionsRenderer();
+
+		// Tampilkan rute di peta
+		directionsRenderer.setMap(googleMap);
+
+		// Tentukan titik awal dan akhir
+		const origin = { lat: parseFloat(marker.latitude), lng: parseFloat(marker.longitude) };
+		const destination = { lat: -8.684644, lng: 115.216843 }; // Koordinat Universitas Udayana Sudirman
+
+		const request = {
+		    origin: origin,
+		    destination: destination,
+		    travelMode: google.maps.TravelMode.DRIVING,
+		};
+
+		// Hitung rute
+		directionsService.route(request, (result, status) => {
+		    if (status === google.maps.DirectionsStatus.OK) {
+		        directionsRenderer.setDirections(result);
+		    } else {
+		        console.error(`Error fetching directions: ${status}`);
+		    }
+		});
     });
 	function goBack() {
        window.history.back();
