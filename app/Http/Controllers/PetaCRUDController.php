@@ -27,8 +27,7 @@ class PetaCRUDController extends Controller
             })
             ->addcolumn('action', function($data) {
                 $btn = '<div class="btn-group">';
-                $btn .= '<span class="btn btn-primary" onClick="#" data-toggle="tooltip" data-placement="top" title="Google API"><i class="fa fa-eye"></i></span>';
-                $btn .= '<span class="btn btn-primary" onClick="#" data-toggle="tooltip" data-placement="top" title="Leaflet"><i class="fa fa-eye"></i></span>';
+                $btn .= '<a target="_blank" href="'.url('/handson4/viewmaps/'.$data->id).'" title="Google API" class="btn btn-info btn-sm"><span data-toggle="tooltip" data-placement="top" title="View Maps">[view maps]</span></a>';
                 $btn .= '<span class="btn btn-primary" onClick="edit_data(' . $data->id . ')" data-toggle="tooltip" data-placement="top" title="Edit Data"><i class="fa fa-edit"></i></span>';
                 $btn .= '<span class="btn btn-danger" onClick="delete_data(' . $data->id . ')" data-toggle="tooltip" data-placement="top" title="Hapus Data"><i class="fa fa-times"></i></span>';
                 $btn .= '</div>';
@@ -49,8 +48,7 @@ class PetaCRUDController extends Controller
         return $datatables
             ->addColumn('action', function($data) {
                 $btn = '<div class="btn-group">';
-                $btn .= '<span class="btn btn-primary" onClick="#" data-toggle="tooltip" data-placement="top" title="Google API"><i class="fa fa-eye"></i></span>';
-                $btn .= '<span class="btn btn-primary" onClick="#" data-toggle="tooltip" data-placement="top" title="Leaflet"><i class="fa fa-eye"></i></span>';
+                 $btn .= '<a target="_blank" href="'.url('/handson4/viewmaps/'.$data->id).'" title="Google API" class="btn btn-info btn-sm"><span data-toggle="tooltip" data-placement="top" title="View Maps">[view maps]</span></a>';
                 $btn .= '<span class="btn btn-primary" onClick="edit_data('.$data->id.')" data-toggle="tooltip" data-placement="top" title="Edit Data"><i class="fa fa-edit"></i></span>';
                 $btn .= '<span class="btn btn-danger" onClick="delete_data('.$data->id.')" data-toggle="tooltip" data-placement="top" title="Hapus Data"><i class="fa fa-times"></i></span>';
                 $btn .= '</div>';
@@ -75,4 +73,41 @@ class PetaCRUDController extends Controller
         ]);
         return response()->json($polygon);
     }
+
+    public function viewmaps($id) {
+        $marker = Marker::find($id);
+        return view('_crud_view_maps', compact('marker'));
+    }
+
+    public function edit($id) {
+        $marker = Marker::find($id);
+        return view('edit_maps', compact('marker'));
+    }
+
+    public function updateMarker(Request $request, $id)
+    {
+        // Validasi input dari form
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+        ]);
+
+        // Cari marker berdasarkan ID
+        $marker = Marker::find($id);
+        if (!$marker) {
+            return redirect()->back()->withErrors(['msg' => 'Marker not found.']);
+        }
+
+        // Update data marker
+        $marker->name = $validated['name'];
+        $marker->latitude = $validated['latitude'];
+        $marker->longitude = $validated['longitude'];
+        $marker->save();
+
+        // Redirect ke halaman sebelumnya dengan pesan sukses
+        return redirect()->route('handson4.viewmaps', $id)->with('success', 'Marker updated successfully!');
+    }
+
+
 }

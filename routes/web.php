@@ -45,5 +45,13 @@ Route::get('/listDataPolygon', [PetaCRUDController::class, 'getListPolygon'])->n
 Route::post('/storeMarker', [PetaCRUDController::class, 'index'])->name('handson3.storeMarker');
 Route::post('/storePolygon', [PetaCRUDController::class, 'index'])->name('handson3.storePolygon');
 
+/*HANDS-ON 4 : */
+Route::get('/handson4/viewmaps/{id}', [PetaCRUDController::class, 'viewmaps'])->name('handson4.viewmaps');
+Route::get('/handson4/viewleaflet/{id}', [PetaCRUDController::class, 'viewleaflet'])->name('handson4.viewleaflet');
+Route::get('/handson4/{id}/edit', [PetaCRUDController::class, 'edit'])->name('handson4.edit');
+Route::put('/updateMarker', [PetaCRUDController::class, 'updateMarker'])->name('handson4.updateMarker');
+
+
+
 
 

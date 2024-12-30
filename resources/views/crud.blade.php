@@ -89,7 +89,6 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @endsection
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 @section('script')
 <script type="text/javascript">
     var token = '{{csrf_token()}}';
@@ -165,5 +164,35 @@
 
     $(document).ready(function(){
     })
+
+
+    function edit_data(id){
+        $.ajax({
+            type: "GET",
+            url: '{{url("handson4")}}/'+id+'/edit',
+            async:true,
+            data: {
+                _token      : "{{csrf_token()}}",
+            },
+            beforeSend: function(data){
+                // on_load();
+                $('#modal-xl').find('.modal-xl').find(".modal-content").find(".modal-header").attr("class","modal-header bg-light-blue");
+                $("#modal-xl .modal-title").html("Edit Data - Maps");
+                $('#modal-xl').modal("show");
+                $('#modal-xl').find('.modal-body-content').html('');
+                $("#modal-xl").find(".overlay").fadeIn("200");
+            },
+                success:  function(data){
+                $('#modal-xl').find('.modal-body-content').html(data);
+            },
+                complete: function(data){
+                $("#modal-xl").find(".overlay").fadeOut("200");
+            },
+                error: function(data) {
+                alert("error ajax occured!");
+            }
+
+        });
+    }
 </script>
 @endsection
